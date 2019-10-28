@@ -50,5 +50,23 @@ collatz n | even n    = 1 + collatz (n `div` 2)
           | otherwise = 1 + collatz (3 * n + 1)
 
 myReverse :: (Ord a) => [a] -> [a]
-myReverse [] = []
-myReverse list = last list : myReverse (take (length list - 1) list)
+myReverse []       = []
+myReverse list@[x] = list
+myReverse (x : xs) = myReverse xs ++ [x]
+
+slowFibonacci :: Integer -> Integer
+slowFibonacci 0 = 0
+slowFibonacci 1 = 1
+slowFibonacci n = slowFibonacci (n - 1) + slowFibonacci (n - 2)
+
+fastFibonacci :: Integer -> Integer
+fastFibonacci = internalFastFibonacci 1 1
+
+internalFastFibonacci :: Integer -> Integer -> Integer -> Integer
+internalFastFibonacci n1 n2 1 = n1
+internalFastFibonacci n1 n2 counter =
+    internalFastFibonacci n2 (n1 + n2) (counter - 1)
+
+funcToAll :: (Ord a) => (a -> a) -> [a] -> [a]
+funcToAll f []       = []
+funcToAll f (x : xs) = f x : funcToAll f xs
