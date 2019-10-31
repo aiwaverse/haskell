@@ -70,20 +70,15 @@ fight defender attacker = damage defender attackPower
 geeAfterRound1 = fight geeRobot theaRobot
 theaAfterRound1 = fight theaRobot geeAfterRound1
 geeAfterRound2 = fight geeAfterRound1 theaAfterRound1
-theaAfterRound2 = fight geeAfterRound2 theaAfterRound2
+theaAfterRound2 = fight theaAfterRound1 geeAfterRound2
 geeAfterRound3 = fight geeAfterRound2 theaAfterRound2
-theaAfterRound3 = fight geeAfterRound3 theaAfterRound2
+theaAfterRound3 = fight theaAfterRound2 geeAfterRound3
 
-winner :: 
-     ((RobotInfo -> Integer) -> Integer)
-     -> ((RobotInfo -> Integer) -> Integer)
-     -> (RobotInfo -> Integer)
-     -> Integer
-winner robotOne robotTwo = let result = compareHealth robotOne robotTwo in 
-    case result of
-        GT -> robotOne
-        LT -> robotTwo
-        EQ -> robotOne
+winner healthOne healthTwo nameOne nameTwo | healthOne > healthTwo = nameOne
+                                           | healthTwo > healthOne = nameTwo
+                                           | otherwise = "Draw"
+    
+beNice robotOne robotTwo = getName robotOne ++ " loves her friend, " ++ getName robotTwo
 
 
         
