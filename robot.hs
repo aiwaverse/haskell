@@ -1,7 +1,8 @@
 type RobotInfo = (String, Integer, Integer)
 
 robot :: RobotInfo -> (RobotInfo -> t) -> t
-robot (name, attack, hp) function = function (name, attack, hp)
+robot (name, attack, hp) function = function (name, attack, rightHp)
+    where rightHp = if hp <= 0 then 0 else hp
 
 name :: RobotInfo -> String
 name (n, _, _) = n
@@ -47,8 +48,42 @@ setHp aRobot newHp = aRobot (\(n, a, h) -> robot (n, a, newHp))
 
 printRobot :: ((RobotInfo -> String) -> String) -> String
 printRobot aRobot = aRobot
-    (\(n, a, h) -> "Name: " ++ n ++ " ,Attack: " ++ show a ++ " ,HP: " ++ show h)
+    (\(n, a, h) -> "Name: " ++ n ++ " ,Attack: " ++ show a ++ " ,HP: " ++ show h
+    )
 
-compareHealth :: ((RobotInfo -> Integer) -> Integer) -> Integer -> Ordering
-compareHealth aRobot = compare (getHp aRobot)
+compareHealth :: 
+       ((RobotInfo -> Integer) -> Integer)
+       -> ((RobotInfo -> Integer) -> Integer) -> Ordering
+compareHealth aRobotOne aRobotTwo = compare (getHp aRobotOne) (getHp aRobotTwo)
 
+damage :: ((RobotInfo -> (RobotInfo -> t1) -> t1) -> t2) -> Integer -> t2
+damage aRobot healthDamage =
+    aRobot (\(n, a, hp) -> robot (n, a, hp - healthDamage))
+
+fight ::
+    ((RobotInfo -> (RobotInfo -> t1) -> t1) -> t2)
+    -> ((RobotInfo -> Integer) -> Integer)
+    -> t2
+fight defender attacker = damage defender attackPower
+    where attackPower = getAttack attacker
+
+geeAfterRound1 = fight geeRobot theaRobot
+theaAfterRound1 = fight theaRobot geeAfterRound1
+geeAfterRound2 = fight geeAfterRound1 theaAfterRound1
+theaAfterRound2 = fight geeAfterRound2 theaAfterRound2
+geeAfterRound3 = fight geeAfterRound2 theaAfterRound2
+theaAfterRound3 = fight geeAfterRound3 theaAfterRound2
+
+winner :: 
+     ((RobotInfo -> Integer) -> Integer)
+     -> ((RobotInfo -> Integer) -> Integer)
+     -> (RobotInfo -> Integer)
+     -> Integer
+winner robotOne robotTwo = let result = compareHealth robotOne robotTwo in 
+    case result of
+        GT -> robotOne
+        LT -> robotTwo
+        EQ -> robotOne
+
+
+        
