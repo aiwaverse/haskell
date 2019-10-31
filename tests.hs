@@ -1,5 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
+import           Data.Char    --for toUpper
+
 isInFirstHalf :: (Ord a) => a -> [a] -> Bool
 isInFirstHalf el list = el `elem` firstHalf
     where firstHalf = take (length list `div` 2) list
@@ -50,9 +52,9 @@ collatz n | even n    = 1 + collatz (n `div` 2)
           | otherwise = 1 + collatz (3 * n + 1)
 
 myReverse :: (Ord a) => [a] -> [a]
-myReverse []       = []
-myReverse list@[x] = list
-myReverse (x : xs) = myReverse xs ++ [x]
+myReverse []            = []
+myReverse list@[x     ] = list
+myReverse (     x : xs) = myReverse xs ++ [x]
 
 slowFibonacci :: Integer -> Integer
 slowFibonacci 0 = 0
@@ -70,3 +72,23 @@ internalFastFibonacci n1 n2 counter =
 funcToAll :: (Ord a) => (a -> a) -> [a] -> [a]
 funcToAll f []       = []
 funcToAll f (x : xs) = f x : funcToAll f xs
+
+myElem :: Ord a => a -> [a] -> Bool
+myElem el lst = case e of
+    1 -> True
+    _ -> False
+    where e = length $ filter (== el) lst
+
+isPalindrome word | original == reversed = True
+                  | otherwise            = False
+  where
+    original = map toUpper $ filter (/= ' ') word
+    reversed = reverse original
+
+harmonic :: (Eq a, Fractional a) => a -> a
+harmonic n = foldr (+) 0 list
+    where list = createHarmonicList n
+
+createHarmonicList :: (Eq a, Fractional a) => a -> [a]
+createHarmonicList 1 = [1.0]
+createHarmonicList n = (1.0 / n) : createHarmonicList (n - 1)
