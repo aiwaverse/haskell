@@ -1,4 +1,4 @@
-module Fun where
+module Lesson12 where
 
 --module that basically does everything the unit tells me to, this is on stack JUST to
 --make hie not be annoying with me
