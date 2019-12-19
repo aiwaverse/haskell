@@ -1,7 +1,8 @@
 module Main where
 
-import Capstone
-import System.Clock
+import           Basement.IntegralConv
+import           Capstone
+import           System.Clock
 
 main :: IO ()
 main = do
@@ -11,7 +12,8 @@ main = do
    let seconds = sec time
    let pad = randomOTP . fromIntegral $ seconds
    let writePad = take (length message) (show pad)
-   putStrLn ("Your pad is " ++ writePad ++ ", write it down")
+   let padInt = show (map charToInt writePad)
+   putStrLn ("Your pad is " ++ padInt ++ ", write it down")
    let encoded = encode (OTP writePad) message
    putStrLn ("The coded message is " ++ encoded)
    let decoded = decode (OTP writePad) encoded
