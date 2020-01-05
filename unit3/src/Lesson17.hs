@@ -33,9 +33,9 @@ data PTable = PTable Events Probs
 
 createPTable :: Events -> Probs -> PTable
 createPTable events probs = PTable events normalizedProbs
- where
-  totalProbs      = sum probs
-  normalizedProbs = map (/ totalProbs) probs
+  where
+    totalProbs      = sum probs
+    normalizedProbs = map (/ totalProbs) probs
 
 showPair :: String -> Double -> String
 showPair event prob = mconcat [event, "|", show prob, "\n"]
@@ -47,19 +47,21 @@ instance Show PTable where
 removeLast :: (Ord a) => [a] -> [a]
 removeLast lst = take almostAll lst where almostAll = length lst - 1
 
+-- this is the cartesian product function directly from the book
 cartCombine :: (a -> b -> c) -> [a] -> [b] -> [c]
 cartCombine func l1 l2 = zipWith func newL1 cycledL2
- where
-  nToAdd     = length l2
-  repeatedL1 = map (replicate nToAdd) l1
-  newL1      = mconcat repeatedL1
-  cycledL2   = cycle l2
+  where
+    nToAdd     = length l2
+    repeatedL1 = map (replicate nToAdd) l1
+    newL1      = mconcat repeatedL1
+    cycledL2   = cycle l2
 
+-- this is my cartesian product function (which looks way more simple)
 myProduct :: (a -> b -> c) -> [a] -> [b] -> [c]
 myProduct func l1 l2 = map funcToPairs productList
- where
-  productList = [ (x, y) | x <- l1, y <- l2 ]
-  funcToPairs = uncurry func
+  where
+    productList = [ (x, y) | x <- l1, y <- l2 ]
+    funcToPairs = uncurry func
 
 
 combineEvents :: Events -> Events -> Events
@@ -72,9 +74,9 @@ instance Semigroup PTable where
   (<>) ptable1        (PTable [] []) = ptable1
   (<>) (PTable [] []) ptable2        = ptable2
   (<>) (PTable e1 p1) (PTable e2 p2) = createPTable newEvents newProbs
-   where
-    newEvents = combineEvents e1 e2
-    newProbs  = combineProbs p1 p2
+    where
+      newEvents = combineEvents e1 e2
+      newProbs  = combineProbs p1 p2
 
 instance Monoid PTable where
   mempty = PTable [] []
