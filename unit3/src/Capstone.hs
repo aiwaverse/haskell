@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+
 module Capstone where
 
 import           Data.List
@@ -57,6 +59,9 @@ file4 =
 
 data TS a = TS [Int] [Maybe a]
 
+valuesTS :: TS a -> [Maybe a]
+valuesTS (TS _ l) = l
+
 insertMaybePair :: Ord k => (k, Maybe v) -> Map.Map k v -> Map.Map k v
 insertMaybePair (_  , Nothing   ) myMap = myMap
 insertMaybePair (key, Just value) myMap = Map.insert key value myMap
@@ -115,6 +120,19 @@ mean xs = listSum / size
     listSum = realToFrac . sum $ xs
     size    = realToFrac . length $ xs
 
+meanMaybe :: (Real a) => [Maybe a] -> Maybe Double
+meanMaybe vals = if null justList then Nothing else Just avg
+  where
+    justList = catMaybes vals
+    avg      = mean justList
+
+maybe2 :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+maybe2 _    Nothing  _        = Nothing
+maybe2 _    _        Nothing  = Nothing
+maybe2 func (Just x) (Just y) = Just $ func x y
+
+-- the book used any, but i realized this makes taking the mean of almost any ts-value useless
+-- therefore, i changed to any, and filtered nothings out for calculations
 meanTS :: (Real a) => TS a -> Maybe Double
 meanTS (TS _ []) = Nothing
 meanTS (TS times values) | all isNothing values = Nothing
@@ -154,9 +172,27 @@ diffPair _        Nothing  = Nothing
 diffPair Nothing  _        = Nothing
 diffPair (Just x) (Just y) = Just (x - y)
 
+
 diffTS :: Num a => TS a -> TS a
 diffTS (TS []    []    ) = TS [] []
 diffTS (TS times values) = TS times (Nothing : diffValues)
   where
     shiftValues = tail values
     diffValues  = zipWith diffPair shiftValues values
+
+movingAvg :: (Real a) => [Maybe a] -> Int -> [Maybe Double]
+movingAvg [] n = []
+movingAvg vals n
+  | length nextVals == n = meanMaybe nextVals : movingAvg restVals n
+  | otherwise            = []
+  where
+    nextVals = take n vals
+    restVals = tail vals
+
+movingAverageTS :: (Real a) => TS a -> Int -> TS Double
+movingAverageTS (TS [] []) n = TS [] []
+movingAverageTS (TS times values) n = TS times smoothedValues 
+  where 
+    ma = movingAvg values n
+    nothings = replicate (n `div` 2) Nothing
+    smoothedValues = mconcat [nothings, ma, nothings]
