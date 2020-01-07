@@ -1,5 +1,10 @@
 module Lesson21 where
 
+data Women 
+  = Lesbian
+  | Bissexual { preferece :: Double }
+  | Straight
+
 data Pizza = Pizza { size :: Double
                    , cost :: Double
                    }
