@@ -1,0 +1,5 @@
+cradle:
+  cabal:
+    component: "probTables:exe:probTables"
+dependencies:
+  - probTables.cabal
