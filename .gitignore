@@ -20,12 +20,12 @@ cabal.sandbox.config
 *.aux
 *.hp
 *.eventlog
-.stack-work/
-/dist-newstyle/
+**.stack-work/
+**dist-newstyle/
 cabal.project.local
 cabal.project.local~
 .HTF/
-*/data.txt
+**data.txt
 .ghc.environment.*
 
 # End of https://www.gitignore.io/api/haskell
