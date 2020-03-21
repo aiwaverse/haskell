@@ -17,4 +17,6 @@ executable filesTest
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
+  other-modules:       Files
   build-depends:       base >= 4.7 && < 5
+                     , directory >= 1.3.3.0 && < 3

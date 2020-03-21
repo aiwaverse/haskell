@@ -58,4 +58,5 @@ baseConvert base number = show convertedInt ++ "." ++ show convertedDec
     convertedDec = baseConverterDec base dec
 
 roundTo :: (RealFrac a) => a -> Int -> a
-roundTo number digits =  fromInteger (round $ number * (10 ^ digits)) / (10.0 ^^ digits)
+roundTo number digits =
+  fromInteger (round $ number * (10 ^ digits)) / (10.0 ^^ digits)

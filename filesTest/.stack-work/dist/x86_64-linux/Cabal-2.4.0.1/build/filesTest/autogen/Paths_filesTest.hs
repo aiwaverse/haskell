@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/bin"
-libdir     = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/lib/x86_64-linux-ghc-8.6.5/filesTest-0.1.0.0-J65p18I8UC29S2knhZHE8U-filesTest"
+libdir     = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/lib/x86_64-linux-ghc-8.6.5/filesTest-0.1.0.0-FpqZArDuKPhFLPd0v8wwja-filesTest"
 dynlibdir  = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/lib/x86_64-linux-ghc-8.6.5"
 datadir    = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/share/x86_64-linux-ghc-8.6.5/filesTest-0.1.0.0"
 libexecdir = "/home/aiwa/Documents/aiwita/codes/haskell/filesTest/.stack-work/install/x86_64-linux/8b66efb808105e2ca9fa5a655d3274393bce6d5da7dad99b35b511da71bae7e2/8.6.5/libexec/x86_64-linux-ghc-8.6.5/filesTest-0.1.0.0"

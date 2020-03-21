@@ -26,6 +26,7 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 **data.txt
+**todo.txt
 .ghc.environment.*
 
 # End of https://www.gitignore.io/api/haskell

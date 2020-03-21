@@ -1,9 +1,11 @@
 module Main where
 
-import qualified Files                         as F
+import           Data.Maybe
+import           Files
+import           System.Environment
 
 main :: IO ()
 main = do
-  putStrLn "Enter the file name"
-  fileName <- getLine
-  F.readFile fileName
+  (fileName : operation : opArgs) <- getArgs
+  let op = fromJust $ lookup operation fileOps
+  op (fileName : opArgs)
