@@ -1,10 +1,12 @@
 #!/usr/bin/env stack
+-- this program has a major bug that i just don't really care to fix, it will convert ALL
+-- instances of " . " to ".", instead of, ideally, only changing the ones that were like that
+-- in the original file
+-- aka don't use this, not yet
 module Main where
 
-import           Data.Monoid()
-import           Data.Foldable                  ( traverse_ )
-import qualified Data.Text                     as T
-import qualified Data.Text.IO                  as T.IO
+import qualified Data.Text          as T
+import qualified Data.Text.IO       as T.IO
 import           System.Directory
 import           System.Environment
 import           System.IO
