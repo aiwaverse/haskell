@@ -1,6 +1,7 @@
 #!/usr/bin/env stack
 module Main where
 
+import           Data.Monoid()
 import           Data.Foldable                  ( traverse_ )
 import qualified Data.Text                     as T
 import qualified Data.Text.IO                  as T.IO
