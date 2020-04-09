@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric         #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE TypeApplications      #-}
 module Tables
   ( ProbData()
   , ProbElement()
@@ -23,16 +23,18 @@ data ProbData = ProbData { n      :: Integer
                          , k      :: Integer
                          , i      :: Double
                          , values :: [Double]
-                         } deriving Show
+                         }
+  deriving Show
 
-data ProbElement = ProbElement { j                   :: Integer
-                                , range              :: String
-                                , absoluteFrequency  :: Integer
-                                , absoluteFrequency' :: Integer
-                                , relativeFrequency  :: Double
-                                , relativeFrequency' :: Double
-                                , classCenter        :: Double
-                                } deriving (Show, Data, G.Generic)
+data ProbElement = ProbElement { j                  :: Integer
+                               , range              :: String
+                               , absoluteFrequency  :: Integer
+                               , absoluteFrequency' :: Integer
+                               , relativeFrequency  :: Double
+                               , relativeFrequency' :: Double
+                               , classCenter        :: Double
+                               }
+  deriving (Show, Data, G.Generic)
 
 instance T.Tabulate ProbElement T.ExpandWhenNested
 
@@ -43,7 +45,8 @@ data ProbTable = ProbTable { j                  :: [Integer]
                            , relativeFrequency  :: [Double]
                            , relativeFrequency' :: [Double]
                            , classCenter        :: [Double]
-                           } deriving (Show, Data, G.Generic)
+                           }
+  deriving (Show, Data, G.Generic)
 
 
 
@@ -51,24 +54,23 @@ buildData :: [Double] -> ProbData
 buildData vals = ProbData n' k' roundedI sortedValues
   where
     sortedValues = sort vals
-    n'            = genericLength vals
-    k'            = round $ 1 + 3.32 * (logBase @Double 10 . fromIntegral $ n')
-    i'            = (/ fromIntegral k') $ last sortedValues - head sortedValues
+    n'           = genericLength vals
+    k'           = round $ 1 + 3.32 * (logBase @Double 10 . fromIntegral $ n')
+    i'           = (/ fromIntegral k') $ last sortedValues - head sortedValues
     roundedI     = roundTo i' 1
 
 
 buildTable :: ProbData -> ProbTable
 buildTable pdata = ProbTable j' r af af' rf rf' cc
   where
-    j'           = [1 .. k pdata]
+    j'          = [1 .. k pdata]
     tableRanges = createRange (values pdata) (i pdata) (k pdata)
     r           = rangeString tableRanges
-    af =
-      map (\ran -> genericLength $ values pdata `inRange` ran) tableRanges
-    af' = scanl1 (+) af
-    rf  = map ((/ (fromIntegral $ n pdata)) . fromIntegral) af  --Thanks hlint
-    rf' = scanl1 (+) rf
-    cc  = map (uncurry (\f s -> (f + s) / 2)) tableRanges
+    af = map (\ran -> genericLength $ values pdata `inRange` ran) tableRanges
+    af'         = scanl1 (+) af
+    rf          = map ((/ (fromIntegral $ n pdata)) . fromIntegral) af  --Thanks hlint
+    rf'         = scanl1 (+) rf
+    cc          = map (uncurry (\f s -> (f + s) / 2)) tableRanges
 
 
 -- I only discovered too late I needed this, so this is my solution to not rewrite
