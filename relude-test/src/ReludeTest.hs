@@ -8,10 +8,10 @@ See README for more info
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module ReludeTest (someFunc, makeVector) where
+module ReludeTest (someFunc, makeVector, neMap) where
 
 import qualified Data.Vector.Unboxed           as VU
-import           Relude                  hiding ( map )
+import           Relude
 
 someFunc :: IO ()
 someFunc = putTextLn "someFunc"
@@ -20,13 +20,8 @@ someFunc = putTextLn "someFunc"
 makeVector :: [Int] -> VU.Vector Int
 makeVector = VU.unfoldr uncons
 
-map' :: (a -> b) -> [a] -> [b]
-map' _  []       = []
-map' fn (x : xs) = fn x : map' fn xs
-
-
 neMap :: (a -> b) -> Maybe (NonEmpty a) -> Maybe (NonEmpty b)
-neMap fn (Just ne) = nonEmpty . map' fn . getList $ ne
+neMap fn (Just ne) = nonEmpty . map fn . getList $ ne
 neMap _  Nothing   = Nothing
 
 getList :: NonEmpty a -> [a]
