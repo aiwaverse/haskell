@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/haskell
-# Edit at https://www.gitignore.io/?templates=haskell
+# Created by https://www.gitignore.io/api/haskell,linux,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=haskell,linux,visualstudiocode
 
 ### Haskell ###
 dist
@@ -20,15 +20,36 @@ cabal.sandbox.config
 *.aux
 *.hp
 *.eventlog
-**.stack-work/
-**dist-newstyle/
+.stack-work/
 cabal.project.local
 cabal.project.local~
-stack.yaml.lock
 .HTF/
-**data.txt
-**todo.txt
 .ghc.environment.*
-.vscode/*
 
-# End of https://www.gitignore.io/api/haskell
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/haskell,linux,visualstudiocode
