@@ -1,0 +1,6 @@
+{
+    "editor.tabSize": 2,
+    "editor.fontFamily": "'Hasklig Medium','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "workbench.colorTheme": "Henna",
+    "languageServerHaskell.useHieWapper": true
+}

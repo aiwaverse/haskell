@@ -1,6 +1,6 @@
 # Changelog
 
-`test-project` uses [PVP Versioning][1].
+`random-test` uses [PVP Versioning][1].
 
 ## 0.0.0.0
 

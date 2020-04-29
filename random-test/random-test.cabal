@@ -1,5 +1,5 @@
 cabal-version:       2.4
-name:                relude-test
+name:                random-test
 version:             0.0.0.0
 synopsis:            See README for more info
 description:         See README for more info
@@ -11,12 +11,11 @@ copyright:           2020 Aiwa
 build-type:          Simple
 extra-doc-files:     README.md
                      CHANGELOG.md
-tested-with:         GHC == 8.8.2
+tested-with:         GHC == 8.6.5
+                     GHC == 8.8.3
 
 common common-options
-  build-depends:       base ^>= 4.13.0.0
-                    ,  relude
-                    ,  vector
+  build-depends:       base >= 4.12.0.0 && < 4.14
   
   ghc-options:         -Wall
                        -Wcompat
@@ -42,16 +41,11 @@ common common-options
                        ViewPatterns
                        FlexibleContexts
 
-library
-  import:              common-options
-  hs-source-dirs:      src
-  exposed-modules:     ReludeTest
-
-executable relude-test
+executable random-test
   import:              common-options
   hs-source-dirs:      app
   main-is:             Main.hs
-  build-depends:       relude-test
+  
   ghc-options:         -threaded
                        -rtsopts
                        -with-rtsopts=-N
