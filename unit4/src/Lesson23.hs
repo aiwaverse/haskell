@@ -5,9 +5,8 @@ module Lesson23
 where
 
 import           Data.Maybe
-import qualified Data.Text.Lazy                as Lazy
-import qualified Data.Text.Lazy.IO             as LazyIO
-                                                ( getContents )
+import qualified Data.Text.Lazy                as LT
+import qualified Data.Text.Lazy.IO             as LTIO
 
 helloPerson :: Text -> Text
 helloPerson name = "Hello" <> " " <> name <> "!"
@@ -19,13 +18,13 @@ helloWorld = do
     let statement = helloPerson name
     putTextLn statement
 
-toInts :: Lazy.Text -> [Int]
-toInts = map fromJust . fmap readMaybe . map Lazy.unpack . Lazy.lines
+toInts :: LT.Text -> [Int]
+toInts = fmap (fromJust . readMaybe . LT.unpack) . LT.lines
 
 sumNumbers :: IO ()
 sumNumbers = do
-    putTextLn "Enter numbers:"
-    userInput <- LazyIO.getContents
+    putTextLn "Enter the numbers:"
+    userInput <- LTIO.getContents
     let numbers = toInts userInput
     putText "Sum: "
     print (sum numbers)
