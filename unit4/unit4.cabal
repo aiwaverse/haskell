@@ -55,7 +55,7 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     Lesson23
+  exposed-modules:     Lesson23, Lesson24
 
 executable unit4
   import:              common-options

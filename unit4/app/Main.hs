@@ -1,7 +1,6 @@
 module Main (main) where
 
-import Lesson23 (sumNumbers)
-
+import Lesson24
 
 main :: IO ()
-main = sumNumbers
+main = countsFile 

@@ -19,7 +19,7 @@ helloWorld = do
     putTextLn statement
 
 toInts :: LT.Text -> [Int]
-toInts = fmap (fromJust . readMaybe . LT.unpack) . LT.lines
+toInts = fmap (fromJust . readMaybe . toString) . LT.lines
 
 sumNumbers :: IO ()
 sumNumbers = do
