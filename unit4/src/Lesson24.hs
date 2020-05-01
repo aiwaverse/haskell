@@ -2,6 +2,8 @@ module Lesson24
     ( getCounts
     , countsToText
     , countsFile
+    , cp
+    , capitalize
     )
 where
 
@@ -26,3 +28,14 @@ countsFile = do
     let counts = countsToText . getCounts $ fileContens
     appendFileText "stats.dat" $ mconcat [toText fileName, " stats:\n", counts]
     putTextLn counts
+
+cp :: FilePath -> FilePath -> IO ()
+cp original copy = do
+    originalContens <- readFileText original
+    writeFileText copy originalContens
+
+capitalize :: FilePath -> IO ()
+capitalize file = do
+    fileContents <- readFileText file
+    let capitalizedFileContents = T.toTitle fileContents
+    writeFileText file capitalizedFileContents
