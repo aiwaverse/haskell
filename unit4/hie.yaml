@@ -1,5 +1,0 @@
-cradle:
-  cabal:
-    component: "unit4:exe:unit4"
-dependencies:
-  - unit4.cabal

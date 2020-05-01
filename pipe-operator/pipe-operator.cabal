@@ -1,5 +1,5 @@
 cabal-version:       2.4
-name:                unit4
+name:                pipe-operator
 version:             0.0.0.0
 synopsis:            See README for more info
 description:         See README for more info
@@ -16,7 +16,7 @@ tested-with:         GHC == 8.8.3
 common common-options
   build-depends:       base ^>= 4.13.0.0
                      , relude
-                     , text
+                     , containers ^>= 0.6.0.1
   
   mixins:              base hiding (Prelude)
                      , relude (Relude as Prelude)
@@ -55,13 +55,4 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     Lesson23
-
-executable unit4
-  import:              common-options
-  hs-source-dirs:      app
-  main-is:             Main.hs
-  build-depends:       unit4
-  ghc-options:         -threaded
-                       -rtsopts
-                       -with-rtsopts=-N
+  exposed-modules:     PipeOperator
