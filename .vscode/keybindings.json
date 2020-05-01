@@ -1,5 +1,0 @@
-{
-  "key": "ctrl+shift+p",
-  "command": "workbench.action.tasks.runTask",
-  "args": "Haskell Formatting"
-}
