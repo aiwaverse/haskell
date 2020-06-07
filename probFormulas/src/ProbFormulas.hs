@@ -16,17 +16,14 @@ module ProbFormulas
     )
 where
 
-mean :: [Double] -> Double
-mean = meanFold
-
-meanFold :: Fractional a => [a] -> a
-meanFold l = uncurry (/) $ foldl' (\(a, n) ax -> (a + ax, n + 1)) (0, 0) l
+mean :: Fractional a => [a] -> a
+mean l = uncurry (/) $ foldl' (\(a, n) ax -> (a + ax, n + 1)) (0, 0) l
 
 variance :: [Double] -> Double
 variance l = sum $ map (\x -> (x - lMean) ^ (2 :: Integer) / n) l
   where
     n     = fromIntegral $ length l - 1
-    lMean = meanFold l
+    lMean = mean l
 
 standardDeviation :: [Double] -> Double
 standardDeviation = sqrt . variance
@@ -54,5 +51,5 @@ difference :: [Double] -> [Double] -> [Double]
 difference = zipWith (\x y -> abs (x - y))
 
 tPairs :: [Double] -> Double
-tPairs l = meanFold l / (standardDeviation l / sqrt floatLenght)
+tPairs l = mean l / (standardDeviation l / sqrt floatLenght)
     where floatLenght = fromIntegral . length $ l
