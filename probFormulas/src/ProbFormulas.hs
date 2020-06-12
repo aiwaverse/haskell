@@ -14,6 +14,7 @@ module ProbFormulas
     , tValuePaired
     , difference
     , qValue
+    , zValue
     )
 where
 
@@ -66,3 +67,8 @@ tValuePaired l = mean l / (standardDeviation l / sqrt floatLenght)
 -- | calculates the q value given (variance, group size) -> variance to be compared (σ)
 qValue :: (Double, Int) -> Double -> Double
 qValue (s², n) σ² = (/ σ²) . (* s²) . fromIntegral $ (n - 1)
+
+-- | calculates the z value given (affected group, group size) -> proportion to be compared (π)
+zValue :: (Double, Int) -> Double -> Double
+zValue (x, n) π = ((p - π) /) . sqrt . (/ fromIntegral n) $ π * (1 - π)
+    where p = x / fromIntegral n
