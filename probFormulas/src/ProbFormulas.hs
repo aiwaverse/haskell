@@ -13,6 +13,7 @@ module ProbFormulas
     , tValueComparasion
     , tValuePaired
     , difference
+    , qValue
     )
 where
 
@@ -61,3 +62,7 @@ difference = zipWith (\x y -> abs (x - y))
 tValuePaired :: [Double] -> Double
 tValuePaired l = mean l / (standardDeviation l / sqrt floatLenght)
     where floatLenght = fromIntegral . length $ l
+
+-- | calculates the q value given (variance, group size) -> variance to be compared (σ)
+qValue :: (Double, Int) -> Double -> Double
+qValue (s², n) σ² = (/ σ²) . (* s²) . fromIntegral $ (n - 1)
