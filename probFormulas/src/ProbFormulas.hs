@@ -11,10 +11,13 @@ module ProbFormulas
     , variance
     , tValue
     , tValueComparasion
+    , tValueComparasionDifferent
     , tValuePaired
     , difference
     , qValue
     , zValue
+    , zValueComparasion
+    , combFreedomDregess
     )
 where
 
@@ -46,6 +49,12 @@ tValueComparasion (x1, s1, n1) (x2, s2, n2) = (x1 - x2) / dividend
     cVariance = combinedVariance (s1, n1) (s2, n2)
     dividend  = sqrt . (* cVariance) $ (1 / floatN1) + (1 / floatN2)
 
+-- | Calculates the t value of two sets of (mean, sd, group size) if the variances are different
+tValueComparasionDifferent :: (Double, Double, Int) -> (Double, Double, Int) -> Double
+tValueComparasionDifferent (x1, s1, n1) (x2, s2, n2) =
+    ((x1 - x2) /) . sqrt $ f s1 n1 + f s2 n2
+    where f s n = s ** 2 / fromIntegral n
+
 -- | calculates the combined variance of (sd1, group size 1) (sd2, group size 2)
 combinedVariance :: (Double, Int) -> (Double, Int) -> Double
 combinedVariance (s1, n1) (s2, n2) = denomin / dividend
@@ -72,3 +81,21 @@ qValue (s², n) σ² = (/ σ²) . (* s²) . fromIntegral $ (n - 1)
 zValue :: (Double, Int) -> Double -> Double
 zValue (x, n) π = ((p - π) /) . sqrt . (/ fromIntegral n) $ π * (1 - π)
     where p = x / fromIntegral n
+
+-- | calculates the z value (proportion) given two pairs of (affected group, group size)
+zValueComparasion :: (Double, Int) -> (Double, Int) -> Double
+zValueComparasion (x1, n1) (x2, n2) = ((p1 - p2) /) . sqrt $ f p1 n1 + f p2 n2
+  where
+    p1 = x1 / fromIntegral n1
+    p2 = x2 / fromIntegral n2
+    f p n = (/ fromIntegral n) . (* p) $ (1 - p)
+
+-- | calculates the combined freedom degrees of (s1, n1) (s2, n2)
+combFreedomDregess :: (Double, Int) -> (Double, Int) -> Int
+combFreedomDregess (s1, n1) (s2, n2) =
+    round
+        . (/ (f s1 n1 + f s2 n2))
+        . (** 2)
+        $ (s1 ** 2 / fromIntegral n1)
+        + (s2 ** 2 / fromIntegral n2)
+    where f s n = (s ** 2 / fromIntegral n) ** 2 / (fromIntegral n - 1)
