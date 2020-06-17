@@ -18,6 +18,7 @@ module ProbFormulas
     , zValue
     , zValueComparasion
     , combFreedomDregess
+    , linearPersonCoefficient
     )
 where
 
@@ -99,3 +100,19 @@ combFreedomDregess (s1, n1) (s2, n2) =
         $ (s1 ** 2 / fromIntegral n1)
         + (s2 ** 2 / fromIntegral n2)
     where f s n = (s ** 2 / fromIntegral n) ** 2 / (fromIntegral n - 1)
+
+linearPersonCoefficient :: Floating a => [a] -> [a] -> Maybe a
+linearPersonCoefficient x@(length -> n1) y@(length -> n2) =
+    if n1 /= n2 then Nothing else Just $ sxx x * sxx y & sqrt & (sxy x y /)
+
+-- | function to use in the pearson linear coefficient
+sxx :: Floating a => [a] -> a
+sxx x = (sumOfSquares -) . (/ (fromIntegral . length $ x)) $ squareOfSums
+  where
+    sumOfSquares = sum $ map (** 2) x
+    squareOfSums = (** 2) $ sum x
+
+-- | function to use in the pearson linear coefficient
+sxy :: Floating a => [a] -> [a] -> a
+sxy x y = (sumOfProd -) . (/ (fromIntegral . length $ x)) $ sum x * sum y
+    where sumOfProd = sum $ zipWith (*) x y
