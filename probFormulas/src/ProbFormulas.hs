@@ -19,6 +19,8 @@ module ProbFormulas
     , zValueComparasion
     , combFreedomDregess
     , linearPersonCoefficient
+    , correlationT
+    , correlationTwithR
     )
 where
 
@@ -116,3 +118,17 @@ sxx x = (sumOfSquares -) . (/ (fromIntegral . length $ x)) $ squareOfSums
 sxy :: Floating a => [a] -> [a] -> a
 sxy x y = (sumOfProd -) . (/ (fromIntegral . length $ x)) $ sum x * sum y
     where sumOfProd = sum $ zipWith (*) x y
+
+-- | calculates the T value of the correlation given the two sets
+correlationT :: Floating a => [a] -> [a] -> Maybe a
+correlationT x y = if isJust pearson then Just t else Nothing
+  where
+    pearson = linearPersonCoefficient x y
+    n       = fromIntegral $ length x
+    r       = fromMaybe 0 pearson
+    t       = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
+
+--  -- | calculates the T value of the correlation given r and n
+correlationTwithR :: Floating a => a -> Int -> a
+correlationTwithR r size = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
+    where n = fromIntegral size
