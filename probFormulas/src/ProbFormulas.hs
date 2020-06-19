@@ -173,4 +173,4 @@ writeRegressionEquation pairs = "Y = " <> show b0 <> signal <> show b1 <> "X"
   where
     b1     = linearRegressionB1 pairs
     b0     = linearRegressionB0 pairs
-    signal = if b1 < 0 then " + " else " - "
+    signal = if b1 < 0 then mempty else "+"
