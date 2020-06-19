@@ -20,7 +20,7 @@ module ProbFormulas
     , zValue
     , zValueComparasion
     , combFreedomDregess
-    , linearPersonCoefficient
+    , linearPearsonCoefficient
     , correlationT
     , correlationTwithR
     , linearRegressionB1
@@ -110,8 +110,8 @@ combFreedomDregess (s1, n1) (s2, n2) =
         + (s2 ** 2 / fromIntegral n2)
     where f s n = (s ** 2 / fromIntegral n) ** 2 / (fromIntegral n - 1)
 
-linearPersonCoefficient :: Floating a => [a] -> [a] -> Maybe a
-linearPersonCoefficient x@(length -> n1) y@(length -> n2) =
+linearPearsonCoefficient :: Floating a => [a] -> [a] -> Maybe a
+linearPearsonCoefficient x@(length -> n1) y@(length -> n2) =
     if n1 /= n2 then Nothing else Just $ sxx x * sxx y & sqrt & (sxy x y /)
 
 -- | function to use in the pearson linear coefficient
@@ -130,7 +130,7 @@ sxy x y = (sumOfProd -) . (/ (fromIntegral . length $ x)) $ sum x * sum y
 correlationT :: Floating a => [a] -> [a] -> Maybe a
 correlationT x y = if isJust pearson then Just t else Nothing
   where
-    pearson = linearPersonCoefficient x y
+    pearson = linearPearsonCoefficient x y
     n       = fromIntegral $ length x
     r       = fromMaybe 0 pearson
     t       = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
