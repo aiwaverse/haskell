@@ -25,6 +25,9 @@ module ProbFormulas
     , correlationTwithR
     , linearRegressionB1
     , linearRegressionB0
+    , writeRegressionEquation
+    , sb1
+    , b1TValue
     )
 where
 
@@ -140,8 +143,7 @@ correlationTwithR r size = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
 linearRegressionB1 :: [(Double, Double)] -> Double
 linearRegressionB1 pairs = top / bottom
   where
-    xs            = map fst pairs
-    ys            = map snd pairs
+    (xs, ys)      = unzip pairs
     sumOfProd     = sum $ zipWith (*) xs ys
     n             = fromIntegral . length $ pairs
     sumOfSquaredX = sum $ map (** 2) xs
@@ -154,8 +156,21 @@ linearRegressionB0 pairs = mean ys - linearRegressionB1 pairs * mean xs
     xs = map fst pairs
     ys = map snd pairs
 
+b1TValue :: [(Double, Double)] -> Double
+b1TValue pairs = linearRegressionB1 pairs / sb1 pairs
+
+sb1 :: [(Double, Double)] -> Double
+sb1 pairs = sqrt s²b1
+  where
+    (xs, ys) = unzip pairs
+    sqr      = sxx ys - linearRegressionB1 pairs * sxy xs ys
+    n        = fromIntegral . length $ pairs
+    s²       = sqr / (n - 2)
+    s²b1     = s² / sxx xs
+
 writeRegressionEquation :: [(Double, Double)] -> Text
 writeRegressionEquation pairs = "Y = " <> show b0 <> signal <> show b1 <> "X"
-  where b1 = linearRegressionB1 pairs
-        b0 = linearRegressionB0 pairs
-        signal = if b1 < 0 then " + " else " - "
+  where
+    b1     = linearRegressionB1 pairs
+    b0     = linearRegressionB0 pairs
+    signal = if b1 < 0 then " + " else " - "
