@@ -6,6 +6,8 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 See README for more info
 -}
 
+{-# LANGUAGE ViewPatterns #-}
+
 module ProbFormulas
     ( mean
     , variance
@@ -21,6 +23,8 @@ module ProbFormulas
     , linearPersonCoefficient
     , correlationT
     , correlationTwithR
+    , linearRegressionB1
+    , linearRegressionB0
     )
 where
 
@@ -132,3 +136,26 @@ correlationT x y = if isJust pearson then Just t else Nothing
 correlationTwithR :: Floating a => a -> Int -> a
 correlationTwithR r size = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
     where n = fromIntegral size
+
+linearRegressionB1 :: [(Double, Double)] -> Double
+linearRegressionB1 pairs = top / bottom
+  where
+    xs            = map fst pairs
+    ys            = map snd pairs
+    sumOfProd     = sum $ zipWith (*) xs ys
+    n             = fromIntegral . length $ pairs
+    sumOfSquaredX = sum $ map (** 2) xs
+    top           = sumOfProd - (sum xs * sum ys) / n
+    bottom        = sumOfSquaredX - (sum xs ** 2) / n
+
+linearRegressionB0 :: [(Double, Double)] -> Double
+linearRegressionB0 pairs = mean ys - linearRegressionB1 pairs * mean xs
+  where
+    xs = map fst pairs
+    ys = map snd pairs
+
+writeRegressionEquation :: [(Double, Double)] -> Text
+writeRegressionEquation pairs = "Y = " <> show b0 <> signal <> show b1 <> "X"
+  where b1 = linearRegressionB1 pairs
+        b0 = linearRegressionB0 pairs
+        signal = if b1 < 0 then " + " else " - "
