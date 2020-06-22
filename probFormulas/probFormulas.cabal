@@ -16,7 +16,6 @@ tested-with:         GHC == 8.8.3
 common common-options
   build-depends:       base ^>= 4.13.0.0
                      , relude
-                     , Chart
   
   mixins:              base hiding (Prelude)
                      , relude (Relude as Prelude)
@@ -56,4 +55,3 @@ library
   import:              common-options
   hs-source-dirs:      src
   exposed-modules:     ProbFormulas
-                     , ProbGraphs
