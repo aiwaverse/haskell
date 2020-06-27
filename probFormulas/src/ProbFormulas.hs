@@ -110,6 +110,7 @@ combFreedomDregess (s1, n1) (s2, n2) =
         + (s2 ** 2 / fromIntegral n2)
     where f s n = (s ** 2 / fromIntegral n) ** 2 / (fromIntegral n - 1)
 
+-- | calculates the linearPearsonCoefficient given two lists of values
 linearPearsonCoefficient :: Floating a => [a] -> [a] -> Maybe a
 linearPearsonCoefficient x@(length -> n1) y@(length -> n2) =
     if n1 /= n2 then Nothing else Just $ sxx x * sxx y & sqrt & (sxy x y /)
@@ -135,11 +136,12 @@ correlationT x y = if isJust pearson then Just t else Nothing
     r       = fromMaybe 0 pearson
     t       = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
 
---  -- | calculates the T value of the correlation given r and n
+-- | calculates the T value of the correlation given r and n
 correlationTwithR :: Floating a => a -> Int -> a
 correlationTwithR r size = (1 - r ** 2) & sqrt & (r * sqrt (n - 2) /)
     where n = fromIntegral size
 
+-- | calculates the b1 linear regression coefficient given [(xn,yn)]
 linearRegressionB1 :: [(Double, Double)] -> Double
 linearRegressionB1 pairs = top / bottom
   where
@@ -150,15 +152,18 @@ linearRegressionB1 pairs = top / bottom
     top           = sumOfProd - (sum xs * sum ys) / n
     bottom        = sumOfSquaredX - (sum xs ** 2) / n
 
+-- | calculates the b0 linear regression coefficient given [(xn,yn)]
 linearRegressionB0 :: [(Double, Double)] -> Double
 linearRegressionB0 pairs = mean ys - linearRegressionB1 pairs * mean xs
   where
     xs = map fst pairs
     ys = map snd pairs
 
+-- | calcualtes the tValue of the b1 coefficient given [(xn, yn)]
 b1TValue :: [(Double, Double)] -> Double
 b1TValue pairs = linearRegressionB1 pairs / sb1 pairs
 
+-- | calculates the sb1 value given [(xn, yn)]
 sb1 :: [(Double, Double)] -> Double
 sb1 pairs = sqrt s²b1
   where
@@ -168,6 +173,7 @@ sb1 pairs = sqrt s²b1
     s²       = sqr / (n - 2)
     s²b1     = s² / sxx xs
 
+-- | write a linear regression equation given [(xn, yn)]
 writeRegressionEquation :: [(Double, Double)] -> Text
 writeRegressionEquation pairs = "Y = " <> show b0 <> signal <> show b1 <> "X"
   where
