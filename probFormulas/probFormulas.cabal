@@ -16,11 +16,7 @@ tested-with:         GHC == 8.8.3
 common common-options
   build-depends:       base ^>= 4.13.0.0
                      , relude
-<<<<<<< HEAD
   
-=======
-
->>>>>>> 24324e7e863c0fd5f5cba29fd13c23047fca2198
   mixins:              base hiding (Prelude)
                      , relude (Relude as Prelude)
   
