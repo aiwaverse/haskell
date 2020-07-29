@@ -2,5 +2,6 @@
     "editor.tabSize": 2,
     "editor.fontFamily": "'Hasklig Medium','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "workbench.colorTheme": "Henna",
+    "haskell.languageServerVariant": "haskell-ide-engine",
     "languageServerHaskell.useHieWapper": true
 }
