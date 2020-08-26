@@ -6,12 +6,20 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 See README for more info
 -}
 
-module NumericClass where
+module NumericClass
+    ( relativeError
+    , digse
+    )
+where
 
 -- | calculates the relative error of @x@ and @xBar@
 relativeError :: Fractional a => a -> a -> a
-relativeError x xBar = abs (x - xBar) / abs x
+relativeError x xBar = abs $ (x - xBar) / abs x
 
 -- | calculates the number of significative correct digits of @x@ and @xBar@
-digse :: (RealFrac a, Integral c, Floating a) => a -> a -> c
-digse x xBar = round . abs . logBase 10 $ relativeError x xBar
+digse :: (Integral t, Fractional a, Ord a) => a -> a -> t
+digse x xBar = internal x xBar 0
+  where
+    internal x' xBar' s =
+        if op >= (5 * 10 ^^ (-s)) then s - 1 else internal x' xBar' (s + 1)
+    op = abs (x - xBar) / abs x

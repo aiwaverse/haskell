@@ -57,8 +57,7 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     NumericClass
-                     , Conversions 
+  exposed-modules:     NumericClass 
 
 executable numericClass
   import:              common-options
