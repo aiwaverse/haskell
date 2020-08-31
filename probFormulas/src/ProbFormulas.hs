@@ -6,8 +6,9 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 See README for more info
 -}
 
-{-# LANGUAGE ViewPatterns #-}
-
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ViewPatterns      #-}
 module ProbFormulas
     ( mean
     , variance
@@ -30,6 +31,8 @@ module ProbFormulas
     , b1TValue
     )
 where
+
+import           Relude
 
 -- | mean calculates the arithimetic mean of a list of Fractionals
 mean :: Fractional a => [a] -> a
