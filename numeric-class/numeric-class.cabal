@@ -55,3 +55,4 @@ library
   import:              common-options
   hs-source-dirs:      src
   exposed-modules:     Utilities
+                     , Roots.Bissection
