@@ -4,7 +4,7 @@
     {
       "label": "Haskell Formatting",
       "type": "shell",
-      "command": "fourmolu -m inplace ${file}",
+      "command": "stylish-haskell -i ${file} && brittany --write-mode inplace ${file}",
       "presentation": {
         "echo": false,
         "reveal": "never",
