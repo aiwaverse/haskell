@@ -21,6 +21,7 @@ common common-options
                      , relude (Relude as Prelude)
   
   ghc-options:         -Wall
+                       -Wno-type-defaults
                        -Wcompat
                        -Widentities
                        -Wincomplete-uni-patterns
@@ -52,4 +53,5 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     ProbFormulas
+  exposed-modules:     Area3
+                     , Area1
