@@ -14,8 +14,8 @@ extra-doc-files:     README.md
 tested-with:         GHC == 8.8.3
 
 common common-options
-  build-depends:       base-noprelude ^>= 4.13.0.0
-                     , relude ^>= 0.7.0.0
+  build-depends:       base ^>= 4.13.0.0
+                     , relude
   
   ghc-options:         -Wall
                        -Wno-type-defaults
@@ -46,6 +46,7 @@ common common-options
                        TypeApplications
                        ViewPatterns
                        DuplicateRecordFields
+                       NoImplicitPrelude
 
 library
   import:              common-options
