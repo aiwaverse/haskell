@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 module Area1
   ( combinations
   , fiveNumbers

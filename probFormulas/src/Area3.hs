@@ -6,6 +6,7 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 See README for more info
 -}
 
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ViewPatterns      #-}
 module Area3
