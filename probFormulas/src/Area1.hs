@@ -1,3 +1,4 @@
+{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Area1
@@ -6,8 +7,12 @@ module Area1
   , discrepants
   , cleanDiscrepants
   , countOccurrences
+  , median
+  , firstQuartile
+  , thirdQuartile
   )
 where
+
 
 import           Data.List               hiding ( head
                                                 , last
@@ -34,12 +39,36 @@ fiveNumbers
 fiveNumbers xs = (ei, q1, md, q3, es)
  where
   sortedList = sort xs
-  listSize   = genericLength sortedList
   ei         = viaNonEmpty head sortedList
-  q1         = sortedList !!? (round . (subtract 1) $ (listSize + 1) / 4)
-  md         = sortedList !!? (round . (subtract 1) $ 2 * (listSize + 1) / 4)
-  q3         = sortedList !!? (round . (subtract 1) $ 3 * (listSize + 1) / 4)
+  q1         = firstQuartile sortedList
+  md         = median sortedList
+  q3         = thirdQuartile sortedList
   es         = viaNonEmpty last sortedList
+
+firstQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
+firstQuartile (sort -> xs) = if odd listSize
+  then xs !!? (listSize `div` 4)
+  else liftA2 (\x y -> (x + y) / 2)
+              (xs !!? (listSize `div` 4))
+              (xs !!? ((listSize `div` 4) - 1))
+  where listSize = length xs + 1
+
+thirdQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
+thirdQuartile (sort -> xs) = if odd listSize
+  then xs !!? (3 * (listSize `div` 4))
+  else liftA2 (\x y -> (x + y) / 2)
+              (xs !!? (3 * listSize `div` 4))
+              (xs !!? ((3 * listSize `div` 4) - 1))
+  where listSize = length xs + 1
+
+
+median :: (Ord a, Fractional a) => [a] -> Maybe a
+median (sort -> xs) = if odd listSize
+  then xs !!? (listSize `div` 2)
+  else liftA2 (\x y -> (x + y) / 2)
+              (xs !!? (listSize `div` 2))
+              (xs !!? ((listSize `div` 2) - 1))
+  where listSize = length xs
 
 -- | calculates the superior and inferior discrepant values given
 -- the five numbers
