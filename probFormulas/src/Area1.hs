@@ -1,6 +1,3 @@
-{-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ViewPatterns      #-}
 module Area1
   ( combinations
   , fiveNumbers
@@ -14,17 +11,15 @@ module Area1
   )
 where
 
-import           Data.List               hiding ( head
-                                                , last
-                                                )
-import           Relude
-import           Relude.Unsafe                  ( fromJust )
-
-
+tanques1 :: [Double]
 tanques1 = [189, 220, 227, 231, 239, 257, 269, 290]
+tanques2 :: [Double]
 tanques2 = [195, 220, 229, 231, 249, 258, 269, 290]
+tanques3 :: [Double]
 tanques3 = [214, 222, 229, 232, 253, 259, 270, 313]
+tanques4 :: [Double]
 tanques4 = [218, 223, 230, 232, 253, 260, 274, 361]
+tanques5 :: [Double]
 tanques5 = [220, 224, 231, 237, 254, 268, 277, 375]
 tanques :: [Double]
 tanques = mconcat [tanques1, tanques2, tanques3, tanques4, tanques5]
@@ -98,7 +93,7 @@ discrepants (_, q1, _, q3, _) = (liftA2 (-) q1 aq, liftA2 (+) q3 aq)
 
 -- | cleans a non empty list of the discrepant values
 cleanDiscrepants :: (Ord a, Fractional a) => [a] -> [a]
-cleanDiscrepants xs = if isNothing ci || isNothing cs
+cleanDiscrepants xs = if isNothing (fst discre) || isNothing (snd discre)
   then error "what the fuck"
-  else filter (\x -> x >= fromJust ci && x <= fromJust cs) xs
-  where (ci, cs) = discrepants $ fiveNumbers xs
+  else filter (\x -> x >= ci && x <= cs) xs
+  where discre@(Just ci, Just cs) = discrepants $ fiveNumbers xs

@@ -17,6 +17,9 @@ common common-options
   build-depends:       base ^>= 4.13.0.0
                      , relude
   
+  mixins:              base hiding (Prelude)
+                     , relude (Relude as Prelude)
+
   ghc-options:         -Wall
                        -Wno-type-defaults
                        -Wcompat
@@ -46,7 +49,6 @@ common common-options
                        TypeApplications
                        ViewPatterns
                        DuplicateRecordFields
-                       NoImplicitPrelude
 
 library
   import:              common-options

@@ -5,10 +5,6 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 
 See README for more info
 -}
-
-{-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ViewPatterns      #-}
 module Area3
   ( mean
   , variance
@@ -31,8 +27,6 @@ module Area3
   , b1TValue
   )
 where
-
-import           Relude
 
 -- | mean calculates the arithimetic mean of a list of Fractionals
 mean :: Fractional a => [a] -> a
