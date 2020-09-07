@@ -16,6 +16,7 @@ tested-with:         GHC == 8.8.3
 common common-options
   build-depends:       base-noprelude ^>= 4.13.0.0
                      , relude
+                     , easyplot
   
   ghc-options:         -Wall
                        -Wno-type-defaults
@@ -56,3 +57,5 @@ library
                      , Utilities
                      , Roots.Bissection
                      , Roots.FixedPoint
+                     , Roots.Newton
+                     , Plotting
