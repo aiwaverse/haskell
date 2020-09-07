@@ -14,11 +14,8 @@ extra-doc-files:     README.md
 tested-with:         GHC == 8.8.3
 
 common common-options
-  build-depends:       base ^>= 4.13.0.0
+  build-depends:       base-noprelude ^>= 4.13.0.0
                      , relude
-  
-  mixins:              base hiding (Prelude)
-                     , relude (Relude as Prelude)
   
   ghc-options:         -Wall
                        -Wno-type-defaults
@@ -55,5 +52,7 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     Utilities
+  exposed-modules:    Prelude
+                     , Utilities
                      , Roots.Bissection
+                     , Roots.FixedPoint

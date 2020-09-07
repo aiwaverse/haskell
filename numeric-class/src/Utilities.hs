@@ -8,6 +8,7 @@ module Utilities
   ( relativeError
   , digse
   , babilonianRoot
+  , printIncreasingIteractions
   )
 where
 
@@ -29,3 +30,6 @@ babilonianRoot :: Double -> Double -> Int -> Double
 babilonianRoot _ estimate 0 = estimate
 babilonianRoot number estimate iteractions =
   babilonianRoot number (estimate / 2 + number / (2 * estimate)) (iteractions - 1)
+
+printIncreasingIteractions :: Show a => (Int -> a) -> Int -> Int -> IO ()
+printIncreasingIteractions f a b = traverse_ (\x -> print $ f x) [a .. b]
