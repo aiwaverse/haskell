@@ -4,7 +4,7 @@ module Roots.Bissection
 where
 
 -- | Calculates the root of a function @f@ given two extremes @a@ and @b@
--- a @tolerance and an "iteration" limit @n (it's recursive)
+-- a @tolerance and an "iteration" limit @n@ (it's recursive)
 bissection :: (Double -> Double) -> Double -> Double -> Double -> Int -> Double
 bissection _ _ _ _ 0 = error "Number of iterations exceeded"
 bissection f a b tolerance n | f p == 0 = p
