@@ -1,6 +1,6 @@
-{-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ViewPatterns      #-}
 module Area1
   ( combinations
   , fiveNumbers
@@ -59,24 +59,24 @@ firstQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
 firstQuartile (sort -> xs) = if odd (length xs)
   then mean (xs !!? ceiling pOdd, xs !!? floor pOdd)
   else mean (xs !!? ceiling pEven, xs !!? floor pEven)
-  where
-    pOdd = ((genericLength xs + 1) / 4) - 1
-    pEven = ((genericLength xs + 2) / 4) - 1
-    mean (Just x, Just y) = Just ((x + y) / 2)
-    mean (Nothing, _) = Nothing
-    mean (_, Nothing) = Nothing
+ where
+  pOdd  = ((genericLength xs + 1) / 4) - 1
+  pEven = ((genericLength xs + 2) / 4) - 1
+  mean (Just x , Just y ) = Just ((x + y) / 2)
+  mean (Nothing, _      ) = Nothing
+  mean (_      , Nothing) = Nothing
 
 
 thirdQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
 thirdQuartile (sort -> xs) = if odd (length xs)
   then mean (xs !!? ceiling pOdd, xs !!? floor pOdd)
   else mean (xs !!? ceiling pEven, xs !!? floor pEven)
-  where
-    pOdd = (3*(genericLength xs + 1) / 4) - 1
-    pEven = ((3 * genericLength xs + 2) / 4) - 1
-    mean (Just x, Just y) = Just ((x + y) / 2)
-    mean (Nothing, _) = Nothing
-    mean (_, Nothing) = Nothing
+ where
+  pOdd  = (3 * (genericLength xs + 1) / 4) - 1
+  pEven = ((3 * genericLength xs + 2) / 4) - 1
+  mean (Just x , Just y ) = Just ((x + y) / 2)
+  mean (Nothing, _      ) = Nothing
+  mean (_      , Nothing) = Nothing
 
 
 median :: (Ord a, Fractional a) => [a] -> Maybe a
@@ -100,5 +100,5 @@ discrepants (_, q1, _, q3, _) = (liftA2 (-) q1 aq, liftA2 (+) q3 aq)
 cleanDiscrepants :: (Ord a, Fractional a) => [a] -> [a]
 cleanDiscrepants xs = if isNothing ci || isNothing cs
   then error "what the fuck"
-  else filter (\x ->  x >= fromJust ci && x <= fromJust cs) xs
+  else filter (\x -> x >= fromJust ci && x <= fromJust cs) xs
   where (ci, cs) = discrepants $ fiveNumbers xs

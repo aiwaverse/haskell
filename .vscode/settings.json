@@ -4,5 +4,8 @@
     "workbench.colorTheme": "Henna",
     "haskell.hlint.executablePath": "/home/maya/.local/bin/hlint",
     "languageServerHaskell.hieExecutablePath": "/usr/bin/hie-8.8.3",
-    "languageServerHaskell.useHieWapper": true
+    "languageServerHaskell.useHieWapper": true,
+    "files.watcherExclude": {
+      "**/target": true
+    }
 }
