@@ -96,4 +96,4 @@ cleanDiscrepants :: (Ord a, Fractional a) => [a] -> [a]
 cleanDiscrepants xs = if isNothing (fst discre) || isNothing (snd discre)
   then error "what the fuck"
   else filter (\x -> x >= ci && x <= cs) xs
-  where ~discre@(Just ci, Just cs) = discrepants $ fiveNumbers xs
+  where discre@(Just ci, Just cs) = discrepants $ fiveNumbers xs
