@@ -2,7 +2,7 @@ module Prelude
   ( module Relude
   , module Relude.Extra
   , module Relude.Numeric
-  , log
+  , ln
   , euler
   )
 where
@@ -14,5 +14,5 @@ import           Relude.Numeric
 euler :: Double
 euler = exp 1
 
-log :: Double -> Double
-log = logBase euler
+ln :: Double -> Double
+ln = logBase euler
