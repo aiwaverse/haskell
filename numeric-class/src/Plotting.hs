@@ -6,11 +6,11 @@ where
 
 import           Graphics.EasyPlot
 
--- | small wrapper around plot to use X11, ignored the results too, I take that no display is failure
-plotX :: Plot a => a -> IO ()
-plotX p = plot X11 p >> pure ()
+-- | small wrapper around plot to use X11
+plotX :: Plot a => a -> IO Bool
+plotX = plot X11
 
--- | small wrapper around plot' to use X11, ignored the results too, I take that no display is failure
+-- | small wrapper around plot' to use X11
 -- Interactive mode is on in this case, useful for 3D plots
-plotX' :: Plot a => a -> IO ()
-plotX' p = plot' [Interactive] X11 p >> pure ()
+plotX' :: Plot a => a -> IO Bool
+plotX' = plot' [Interactive] X11
