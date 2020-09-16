@@ -1,3 +1,5 @@
+ {-# LANGUAGE ViewPatterns #-}
+-- while redundant, this makes stylish haskell work
 module Area1
   ( combinations
   , fiveNumbers
@@ -7,23 +9,15 @@ module Area1
   , median
   , firstQuartile
   , thirdQuartile
-  , tanques
+  , meanDeviation
+  , variationCoefficient
+  , variationCoefficientList
   )
 where
 
-tanques1 :: [Double]
-tanques1 = [189, 220, 227, 231, 239, 257, 269, 290]
-tanques2 :: [Double]
-tanques2 = [195, 220, 229, 231, 249, 258, 269, 290]
-tanques3 :: [Double]
-tanques3 = [214, 222, 229, 232, 253, 259, 270, 313]
-tanques4 :: [Double]
-tanques4 = [218, 223, 230, 232, 253, 260, 274, 361]
-tanques5 :: [Double]
-tanques5 = [220, 224, 231, 237, 254, 268, 277, 375]
-tanques :: [Double]
-tanques = mconcat [tanques1, tanques2, tanques3, tanques4, tanques5]
-
+import           Area3                          ( mean
+                                                , standardDeviation
+                                                )
 
 -- | given the size of the combinations and a list, produces all the possible subsequences of that size
 combinations :: Int -> [a] -> [[a]]
@@ -52,26 +46,26 @@ fiveNumbers xs = (ei, q1, md, q3, es)
 
 firstQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
 firstQuartile (sort -> xs) = if odd (length xs)
-  then mean (xs !!? ceiling pOdd, xs !!? floor pOdd)
-  else mean (xs !!? ceiling pEven, xs !!? floor pEven)
+  then meanV (xs !!? ceiling pOdd, xs !!? floor pOdd)
+  else meanV (xs !!? ceiling pEven, xs !!? floor pEven)
  where
   pOdd  = ((genericLength xs + 1) / 4) - 1
   pEven = ((genericLength xs + 2) / 4) - 1
-  mean (Just x , Just y ) = Just ((x + y) / 2)
-  mean (Nothing, _      ) = Nothing
-  mean (_      , Nothing) = Nothing
+  meanV (Just x , Just y ) = Just ((x + y) / 2)
+  meanV (Nothing, _      ) = Nothing
+  meanV (_      , Nothing) = Nothing
 
 
 thirdQuartile :: (Ord a, Fractional a) => [a] -> Maybe a
 thirdQuartile (sort -> xs) = if odd (length xs)
-  then mean (xs !!? ceiling pOdd, xs !!? floor pOdd)
-  else mean (xs !!? ceiling pEven, xs !!? floor pEven)
+  then meanV (xs !!? ceiling pOdd, xs !!? floor pOdd)
+  else meanV (xs !!? ceiling pEven, xs !!? floor pEven)
  where
   pOdd  = (3 * (genericLength xs + 1) / 4) - 1
   pEven = ((3 * genericLength xs + 2) / 4) - 1
-  mean (Just x , Just y ) = Just ((x + y) / 2)
-  mean (Nothing, _      ) = Nothing
-  mean (_      , Nothing) = Nothing
+  meanV (Just x , Just y ) = Just ((x + y) / 2)
+  meanV (Nothing, _      ) = Nothing
+  meanV (_      , Nothing) = Nothing
 
 
 median :: (Ord a, Fractional a) => [a] -> Maybe a
@@ -97,3 +91,19 @@ cleanDiscrepants xs = if isNothing (fst discre) || isNothing (snd discre)
   then error "what the fuck"
   else filter (\x -> x >= ci && x <= cs) xs
   where discre@(Just ci, Just cs) = discrepants $ fiveNumbers xs
+
+-- | calculates the mean deviation of a list @xs@ of Doubles
+meanDeviation :: [Double] -> Double
+meanDeviation xs = sumOfDiff / genericLength xs
+ where
+  m         = mean xs
+  sumOfDiff = sum $ map (\x -> abs $ x - m) xs
+
+-- | Calculates the coefficient of variation given a @standard deviation@
+-- and a @mean@
+variationCoefficient :: Double -> Double -> Double
+variationCoefficient stdDeviation meanValue = stdDeviation / meanValue
+
+-- | Calculates the coefficient of variation given a list of values @xs@
+variationCoefficientList :: [Double] -> Double
+variationCoefficientList xs = variationCoefficient (standardDeviation xs) (mean xs)

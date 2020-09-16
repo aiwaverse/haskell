@@ -14,12 +14,9 @@ extra-doc-files:     README.md
 tested-with:         GHC == 8.8.3
 
 common common-options
-  build-depends:       base ^>= 4.13.0.0
+  build-depends:       base-noprelude ^>= 4.13.0.0
                      , relude
   
-  mixins:              base hiding (Prelude)
-                     , relude (Relude as Prelude)
-
   ghc-options:         -Wall
                        -Wno-type-defaults
                        -Wcompat
@@ -53,5 +50,7 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:     Area3
+  exposed-modules:   Prelude
                      , Area1
+                     , Area2
+                     , Area3

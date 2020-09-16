@@ -8,6 +8,7 @@ See README for more info
 module Area3
   ( mean
   , variance
+  , standardDeviation
   , tValue
   , tValueComparasion
   , tValueComparasionDifferent
