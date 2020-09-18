@@ -2,5 +2,6 @@ resolver: lts-16.10
 extra-deps:
   - relude-0.7.0.0
   - easyplot-1.0
+  - matrix-0.3.6.1
 packages:
   - .

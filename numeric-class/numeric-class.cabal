@@ -17,6 +17,7 @@ common common-options
   build-depends:       base-noprelude ^>= 4.13.0.0
                      , relude
                      , easyplot
+                     , matrix
   
   ghc-options:         -Wall
                        -Wno-type-defaults
@@ -39,6 +40,7 @@ common common-options
                        DeriveGeneric
                        GeneralizedNewtypeDeriving
                        InstanceSigs
+                       FlexibleInstances
                        KindSignatures
                        LambdaCase
                        OverloadedStrings
@@ -59,3 +61,4 @@ library
                      , Roots.FixedPoint
                      , Roots.Newton
                      , Plotting
+                     , Matrix
