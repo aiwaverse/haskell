@@ -5,6 +5,8 @@ module Area2
   , randomVariableStdDeviation
   , binomialProbabilityFunction
   , poissonProbabilityFunction
+  , hypgeoProbabilityFunction
+  , probabilityOverRange
   )
 where
 
@@ -14,7 +16,7 @@ where
 -- 10.0
 numberOfCombinations :: Double -> Double -> Double
 numberOfCombinations n k = fact n / (fact k * fact (n - k))
-  where fact x = foldl' (*) 1 [1 .. x]
+  where fact x = product [1 .. x]
 
 -- | calculates the expected value, or ponderate mean, given a list of
 -- values and their probabilities, which must sum to 1
@@ -28,7 +30,7 @@ expectedValue = sum . map (uncurry (*))
 -- >>> randomVariableVariance [(0,0.1),(1,0.6),(2,0.3)]
 -- 0.36
 randomVariableVariance :: Num a => [(a, a)] -> a
-randomVariableVariance xs = sum . map (uncurry (\x p -> (x - u) ^ 2 * p)) $ xs
+randomVariableVariance xs = sum . map (\(x, p) -> (x - u) ^ 2 * p) $ xs
   where u = expectedValue xs
 
 -- | calculates the standard deviation of a random variable, given a list of
@@ -53,4 +55,22 @@ poissonProbabilityFunction :: Double -> Double -> Double
 poissonProbabilityFunction x lambda = euler ** (-lambda) * lambda ** x / fact x
  where
   euler = exp 1
-  fact n = foldl' (*) 1 [1 .. n]
+  fact n = product [1 .. n]
+
+-- | Calculates the probability of a hypergeometric function distribition
+hypgeoProbabilityFunction
+  :: Double -- the number of repetitions of the experiment
+  -> Double -- the number seeked (success)
+  -> Double -- the size of the total population
+  -> Double -- the size of the first sub population
+  -> Double -- the size of the second sub population
+  -> Double
+hypgeoProbabilityFunction repetitions expected population subPopulation1 subPopulation2 =
+  ( numberOfCombinations subPopulation1 expected
+    * numberOfCombinations subPopulation2 (repetitions - expected)
+    )
+    / numberOfCombinations population repetitions
+
+-- | Calculates the sums of the probability function @f@ applied to the ranges @(a, b)@, inclusive
+probabilityOverRange :: (Double -> Double) -> (Double, Double) -> Double
+probabilityOverRange f (a, b) = sum $ map f [a .. b]
