@@ -1,4 +1,10 @@
-module Prelude (module Relude) where
+module Prelude
+  ( module Relude
+  , euler
+  )
+where
 
-import Relude
+import           Relude
 
+euler :: Double
+euler = exp 1

@@ -5,13 +5,19 @@ module Area2
   , randomVariableStdDeviation
   , binomialProbabilityFunction
   , poissonProbabilityFunction
-<<<<<<< HEAD
   , hypgeoProbabilityFunction
   , probabilityOverRange
-=======
   , continousMean
   , continousVariance
->>>>>>> 3b5fb16a1d9516a17cd08e9b8749814601666956
+  , uniformMean
+  , uniformVariance
+  , uniformLessThan
+  , uniformMoreThan
+  , exponentialMean
+  , exponentialVariance
+  , exponentialLessThan
+  , exponentialMoreThan
+  , transformToStandard
   )
 where
 
@@ -54,20 +60,14 @@ randomVariableStdDeviation = sqrt . randomVariableVariance
 -- 0.43200000000000005
 binomialProbabilityFunction :: Double -> Double -> Double -> Double
 binomialProbabilityFunction n x successChance =
-  numberOfCombinations n x
-    *  (successChance ** x)
-    *  (1 - successChance)
-    ** (n - x)
+  numberOfCombinations n x * (successChance ** x) * (1 - successChance) ** (n - x)
 
 -- | calculates the probability of an event with @x@ successes,
 -- and @lambda@ mean chance of sucess in a poisson distribution
 poissonProbabilityFunction :: Double -> Double -> Double
 poissonProbabilityFunction x lambda = euler ** (-lambda) * lambda ** x / fact x
- where
-  euler = exp 1
-  fact n = product [1 .. n]
+  where fact n = product [1 .. n]
 
-<<<<<<< HEAD
 -- | Calculates the probability of a hypergeometric function distribition
 hypgeoProbabilityFunction
   :: Double -- the number of repetitions of the experiment
@@ -85,14 +85,61 @@ hypgeoProbabilityFunction repetitions expected population subPopulation1 subPopu
 -- | Calculates the sums of the probability function @f@ applied to the ranges @(a, b)@, inclusive
 probabilityOverRange :: (Double -> Double) -> (Double, Double) -> Double
 probabilityOverRange f (a, b) = sum $ map f [a .. b]
-=======
-continousMean :: (Double -> Double) -> (Double, Double) -> Maybe Double
-continousMean f interval =
-  quadRes $ quadRomberg defQuad interval (\x -> f x * x)
 
+-- | Calculates the mean of continous random variable
+-- with probabiblity function @f@ on the interval @(a,b)@
+continousMean :: (Double -> Double) -> (Double, Double) -> Maybe Double
+continousMean f interval = quadRes $ quadRomberg defQuad interval (\x -> f x * x)
+
+-- | Calculates the variance of continous random variable
+-- with probabiblity function @f@ on the interval @(a,b)@
 continousVariance :: (Double -> Double) -> (Double, Double) -> Maybe Double
 continousVariance f interval = liftA2 (-) eX cMean
  where
   cMean = (** 2) <$> continousMean f interval
   eX    = quadRes $ quadRomberg defQuad interval (\x -> f x * x ** 2)
->>>>>>> 3b5fb16a1d9516a17cd08e9b8749814601666956
+
+-- | Given the interval @(a, b)@, calculates the mean of a
+-- uniform distribution
+uniformMean :: (Double, Double) -> Double
+uniformMean (alpha, beta) = (alpha + beta) / 2
+
+-- | Given the interval @(a, b)@, calculates the variance of a
+-- uniform distribution
+uniformVariance :: (Double, Double) -> Double
+uniformVariance (alpha, beta) = (beta - alpha) ** 2 / 12
+
+-- | Given the interval @(a, b)@, and a value @x@, calculates the
+-- probability of a value be less than @x@, on a uniform distribution
+uniformLessThan :: (Double, Double) -> Double -> Double
+uniformLessThan (alpha, beta) x = (x - alpha) / (beta - alpha)
+
+-- | Given the interval @(a, b)@, and a value @x@, calculates the
+-- probability of a value be more than @x@, on a uniform distribution
+uniformMoreThan :: (Double, Double) -> Double -> Double
+uniformMoreThan (alpha, beta) x = (beta - x) / (beta - alpha)
+
+-- | Calculates the mean of a exponential distribution given
+-- a @lambda value@
+exponentialMean :: Double -> Double
+exponentialMean = (1 /)
+
+-- | Calculates the variance of a exponential distribution given
+-- a @lambda value@
+exponentialVariance :: Double -> Double
+exponentialVariance lambda = 1 / lambda ** 2
+
+-- | Given the @lambda@, and a value @x@, calculates the
+-- probability of a value be more than @x@, on a exponential distribution
+exponentialMoreThan :: Double -> Double -> Double
+exponentialMoreThan lambda x = euler ** (negate lambda * x)
+
+-- | Given the @lambda@, and a value @x@, calculates the
+-- probability of a value be less than @x@, on a exponential distribution
+exponentialLessThan :: Double -> Double -> Double
+exponentialLessThan lambda x = 1 - exponentialMoreThan lambda x
+
+-- | Given @x@, @mean@, and @variance@, calculates the value of 
+-- @x@ on a standard normal distribution
+transformToStandard :: Double -> Double -> Double -> Double
+transformToStandard x mean variance = (x - mean) / variance
