@@ -25,4 +25,4 @@ bissectionIteractions :: (Double, Double) -> Double -> Int
 bissectionIteractions (a, b) stop = findStopPoint (b - a) stop 0
  where
   findStopPoint err tol n =
-    if err < tol then (n - 1) else findStopPoint (err / 2) tol (n + 1)
+    if err < tol then n - 1 else findStopPoint (err / 2) tol (n + 1)
