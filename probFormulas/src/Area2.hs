@@ -5,10 +5,17 @@ module Area2
   , randomVariableStdDeviation
   , binomialProbabilityFunction
   , poissonProbabilityFunction
+<<<<<<< HEAD
   , hypgeoProbabilityFunction
   , probabilityOverRange
+=======
+  , continousMean
+  , continousVariance
+>>>>>>> 3b5fb16a1d9516a17cd08e9b8749814601666956
   )
 where
+
+import           Numeric.Tools.Integration
 
 -- | calculates the number of combinations of (n, k), where @n@ is
 -- the number of possibilties and @k@ how many picks
@@ -47,7 +54,10 @@ randomVariableStdDeviation = sqrt . randomVariableVariance
 -- 0.43200000000000005
 binomialProbabilityFunction :: Double -> Double -> Double -> Double
 binomialProbabilityFunction n x successChance =
-  numberOfCombinations n x * (successChance ** x) * (1 - successChance) ** (n - x)
+  numberOfCombinations n x
+    *  (successChance ** x)
+    *  (1 - successChance)
+    ** (n - x)
 
 -- | calculates the probability of an event with @x@ successes,
 -- and @lambda@ mean chance of sucess in a poisson distribution
@@ -57,6 +67,7 @@ poissonProbabilityFunction x lambda = euler ** (-lambda) * lambda ** x / fact x
   euler = exp 1
   fact n = product [1 .. n]
 
+<<<<<<< HEAD
 -- | Calculates the probability of a hypergeometric function distribition
 hypgeoProbabilityFunction
   :: Double -- the number of repetitions of the experiment
@@ -74,3 +85,14 @@ hypgeoProbabilityFunction repetitions expected population subPopulation1 subPopu
 -- | Calculates the sums of the probability function @f@ applied to the ranges @(a, b)@, inclusive
 probabilityOverRange :: (Double -> Double) -> (Double, Double) -> Double
 probabilityOverRange f (a, b) = sum $ map f [a .. b]
+=======
+continousMean :: (Double -> Double) -> (Double, Double) -> Maybe Double
+continousMean f interval =
+  quadRes $ quadRomberg defQuad interval (\x -> f x * x)
+
+continousVariance :: (Double -> Double) -> (Double, Double) -> Maybe Double
+continousVariance f interval = liftA2 (-) eX cMean
+ where
+  cMean = (** 2) <$> continousMean f interval
+  eX    = quadRes $ quadRomberg defQuad interval (\x -> f x * x ** 2)
+>>>>>>> 3b5fb16a1d9516a17cd08e9b8749814601666956

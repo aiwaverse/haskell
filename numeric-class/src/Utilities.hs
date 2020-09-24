@@ -15,6 +15,7 @@ module Utilities
 where
 
 import           Numeric
+import           Data.Foldable(traverse_)
 
 -- | calculates the relative error of @x@ and @xBar@
 relativeError :: Fractional a => a -> a -> a
@@ -40,7 +41,7 @@ babilonianRoot number estimate iteractions =
 -- This is highly innefective, but since these things have usually
 -- a small range and aren't expesnive, it's not a problem
 printIncreasingIteractions :: Show a => (Int -> a) -> Int -> Int -> IO ()
-printIncreasingIteractions f a b = traverse_ (\x -> print $ f x) [a .. b]
+printIncreasingIteractions f a b = traverse_ (print . f) [a .. b]
 
 -- | Given a number of @digits@ and a @RealFloat@ @num@, return a @String@ with
 -- is made of @num@ with the number of @digits@ after the decimal point 
