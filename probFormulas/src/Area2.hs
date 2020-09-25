@@ -18,6 +18,7 @@ module Area2
   , exponentialLessThan
   , exponentialMoreThan
   , transformToStandard
+  , exponentialMedian
   )
 where
 
@@ -128,6 +129,11 @@ exponentialMean = (1 /)
 -- a @lambda value@
 exponentialVariance :: Double -> Double
 exponentialVariance lambda = 1 / lambda ** 2
+
+-- | Calculates the median of a exponential distribution given
+-- a @lambda value@
+exponentialMedian :: Double -> Double
+exponentialMedian = (ln 2 /)
 
 -- | Given the @lambda@, and a value @x@, calculates the
 -- probability of a value be more than @x@, on a exponential distribution
