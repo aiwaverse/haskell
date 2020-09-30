@@ -145,7 +145,7 @@ exponentialMoreThan lambda x = euler ** (negate lambda * x)
 exponentialLessThan :: Double -> Double -> Double
 exponentialLessThan lambda x = 1 - exponentialMoreThan lambda x
 
--- | Given @x@, @mean@, and @variance@, calculates the value of 
+-- | Given @x@, @mean@, and @standardDeviation@, calculates the value of 
 -- @x@ on a standard normal distribution
 transformToStandard :: Double -> Double -> Double -> Double
-transformToStandard x mean variance = (x - mean) / variance
+transformToStandard x mean standardDeviation = (x - mean) / standardDeviation
