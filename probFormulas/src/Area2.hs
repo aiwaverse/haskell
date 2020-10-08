@@ -19,6 +19,9 @@ module Area2
   , exponentialMoreThan
   , transformToStandard
   , exponentialMedian
+  , convidenceInterval
+  , convidenceIntervalTwoGroups
+  , combinedVariance
   )
 where
 
@@ -145,7 +148,29 @@ exponentialMoreThan lambda x = euler ** (negate lambda * x)
 exponentialLessThan :: Double -> Double -> Double
 exponentialLessThan lambda x = 1 - exponentialMoreThan lambda x
 
--- | Given @x@, @mean@, and @standardDeviation@, calculates the value of 
+-- | Given @x@, @mean@, and @standardDeviation@, calculates the value of
 -- @x@ on a standard normal distribution
 transformToStandard :: Double -> Double -> Double -> Double
 transformToStandard x mean standardDeviation = (x - mean) / standardDeviation
+
+-- | Given a @mean@, @standard deviation@, @size@ and @areaDelimiter@ (z or t), calculates the convidence interval
+convidenceInterval :: Floating b => b -> b -> b -> b -> (b, b)
+convidenceInterval mean stdDvt n areaDelimiter =
+  (mean - areaDelimiter * stdDvt / sqrt n, mean + areaDelimiter * stdDvt / sqrt n)
+
+convidenceIntervalTwoGroups
+  :: (Double, Double)
+  -> (Double, Double)
+  -> (Double, Double)
+  -> Double
+  -> (Double, Double)
+convidenceIntervalTwoGroups (mean1, mean2) (variance1, variance2) (n1, n2) areaDelimiter
+  = (combinedMeans - secondPortion, combinedMeans + secondPortion)
+ where
+  cv            = combinedVariance variance1 variance2 n1 n2
+  combinedMeans = mean1 - mean2
+  secondPortion = (* areaDelimiter) . sqrt $ (1 / n1 + 1 / n2) * cv
+
+combinedVariance :: Fractional a => a -> a -> a -> a -> a
+combinedVariance variance1 variance2 n1 n2 =
+  (variance1 * (n1 - 1) + variance2 * (n2 - 1)) / ((n1 - 1) + (n2 - 1))
