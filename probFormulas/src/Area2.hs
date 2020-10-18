@@ -19,8 +19,8 @@ module Area2
   , exponentialMoreThan
   , transformToStandard
   , exponentialMedian
-  , convidenceInterval
-  , convidenceIntervalTwoGroups
+  , confidenceInterval
+  , confidenceIntervalTwoGroups
   , combinedVariance
   )
 where
@@ -154,23 +154,28 @@ transformToStandard :: Double -> Double -> Double -> Double
 transformToStandard x mean standardDeviation = (x - mean) / standardDeviation
 
 -- | Given a @mean@, @standard deviation@, @size@ and @areaDelimiter@ (z or t), calculates the convidence interval
-convidenceInterval :: Floating b => b -> b -> b -> b -> (b, b)
-convidenceInterval mean stdDvt n areaDelimiter =
+confidenceInterval :: Floating b => b -> b -> b -> b -> (b, b)
+confidenceInterval mean stdDvt n areaDelimiter =
   (mean - areaDelimiter * stdDvt / sqrt n, mean + areaDelimiter * stdDvt / sqrt n)
 
-convidenceIntervalTwoGroups
+-- | Given two means, two variances, two group sizes and the area delimiter, calculates the
+-- confidence interval for the difference of the two groups
+confidenceIntervalTwoGroups
   :: (Double, Double)
   -> (Double, Double)
   -> (Double, Double)
   -> Double
   -> (Double, Double)
-convidenceIntervalTwoGroups (mean1, mean2) (variance1, variance2) (n1, n2) areaDelimiter
+confidenceIntervalTwoGroups (mean1, mean2) (variance1, variance2) (n1, n2) areaDelimiter
   = (combinedMeans - secondPortion, combinedMeans + secondPortion)
  where
-  cv            = combinedVariance variance1 variance2 n1 n2
+  cv = if variance1 == variance2
+    then variance1
+    else combinedVariance variance1 variance2 n1 n2
   combinedMeans = mean1 - mean2
   secondPortion = (* areaDelimiter) . sqrt $ (1 / n1 + 1 / n2) * cv
 
+-- | Given two variances and two group sizes returns the combined variance
 combinedVariance :: Fractional a => a -> a -> a -> a -> a
 combinedVariance variance1 variance2 n1 n2 =
   (variance1 * (n1 - 1) + variance2 * (n2 - 1)) / ((n1 - 1) + (n2 - 1))
