@@ -127,7 +127,6 @@ montaCaminhosMaybe nome (Just x : xs) = Just (nome : x) : montaCaminhosMaybe nom
 encontraTodosCaminhos :: T.Text -> T.Text -> Grafo -> [T.Text] -> [Maybe [T.Text]]
 encontraTodosCaminhos origem destino grafo visitadas
   | origem == destino               = [Just [destino]]
-  | all isNothing caminhosPossiveis = [Nothing]
   | otherwise                       = montaCaminhosMaybe origem caminhosReais
  where
   caminhosPossiveis = encontraTodosCaminhosVizinhos
