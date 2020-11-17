@@ -1,3 +1,4 @@
 resolver: lts-16.10
 extra-deps:
   - numeric-tools-0.2.0.1
+  - statistics-0.15.2.0

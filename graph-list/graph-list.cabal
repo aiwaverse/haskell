@@ -1,8 +1,10 @@
 cabal-version:       2.4
-name:                probFormulas
+name:                graph-list
 version:             0.0.0.0
 synopsis:            See README for more info
-description:         See README for more info
+description:
+    See README for more info.
+    See README.md for more details.
 license:             MIT
 license-file:        LICENSE
 author:              Aiwa
@@ -11,27 +13,31 @@ copyright:           2020 Aiwa
 build-type:          Simple
 extra-doc-files:     README.md
                      CHANGELOG.md
-tested-with:         GHC == 8.8.3
+tested-with:         GHC == 8.8.4
+                     GHC == 8.10.2
 
 common common-options
-  build-depends:       base-noprelude ^>= 4.13.0.0
-                     , relude
-                     , numeric-tools
-                     , statistics
-  
+  build-depends:       base >= 4.13.0.0 && < 4.15
+                     , text
+
   ghc-options:         -Wall
-                       -Wno-type-defaults
                        -Wcompat
                        -Widentities
                        -Wincomplete-uni-patterns
                        -Wincomplete-record-updates
-  if impl(ghc >= 8.0)
-    ghc-options:       -Wredundant-constraints
+                       -Wredundant-constraints
+                       -Wnoncanonical-monad-instances
   if impl(ghc >= 8.2)
     ghc-options:       -fhide-source-paths
   if impl(ghc >= 8.4)
     ghc-options:       -Wmissing-export-lists
                        -Wpartial-fields
+  if impl(ghc >= 8.8)
+    ghc-options:       -Wmissing-deriving-strategies
+                       -fwrite-ide-info
+                       -hiedir=.hie
+  if impl(ghc >= 8.10)
+    ghc-options:       -Wunused-packages
 
   default-language:    Haskell2010
   default-extensions:  ConstraintKinds
@@ -52,7 +58,4 @@ common common-options
 library
   import:              common-options
   hs-source-dirs:      src
-  exposed-modules:   Prelude
-                     , Area1
-                     , Area2
-                     , Area3
+  exposed-modules:     GraphList
