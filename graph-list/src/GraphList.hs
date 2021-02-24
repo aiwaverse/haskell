@@ -6,7 +6,17 @@ Maintainer: Aiwa <aiwavision@protonmail.com>
 See README for more info
 -}
 {-# LANGUAGE OverloadedStrings #-}
-module GraphList where
+module GraphList
+  ( mapa
+  , estaNaLista
+  , subtraiLista
+  , vizinhos
+  , encontraCaminho
+  , encontraCaminhoVizinhos
+  , montaCaminhosMaybe
+  , encontraTodosCaminhos
+  , encontraTodosCaminhosVizinhos
+  ) where
 
 import           Data.Maybe                     ( fromJust
                                                 , isJust
@@ -81,11 +91,6 @@ mapa =
 estaNaLista :: T.Text -> [T.Text] -> Bool
 estaNaLista = elem
 
-estaNoGrafo :: T.Text -> Grafo -> Bool
-estaNoGrafo _    []       = False
-estaNoGrafo nome (x : xs) = (nome == nodeNome x) || estaNoGrafo nome xs
-
-
 subtraiLista :: [T.Text] -> [T.Text] -> [T.Text]
 subtraiLista lista1 lista2 =
   foldr (\elm acc -> if elm `estaNaLista` lista2 then acc else elm : acc) [] lista1
@@ -126,8 +131,8 @@ montaCaminhosMaybe nome (Just x : xs) = Just (nome : x) : montaCaminhosMaybe nom
 
 encontraTodosCaminhos :: T.Text -> T.Text -> Grafo -> [T.Text] -> [Maybe [T.Text]]
 encontraTodosCaminhos origem destino grafo visitadas
-  | origem == destino               = [Just [destino]]
-  | otherwise                       = montaCaminhosMaybe origem caminhosReais
+  | origem == destino = [Just [destino]]
+  | otherwise         = montaCaminhosMaybe origem caminhosReais
  where
   caminhosPossiveis = encontraTodosCaminhosVizinhos
     (vizinhos origem grafo visitadasNovo)
@@ -142,5 +147,6 @@ encontraTodosCaminhosVizinhos
 encontraTodosCaminhosVizinhos [] _ _ _ = [Nothing]
 encontraTodosCaminhosVizinhos (x : xs) destino grafo visitadas
   | any isNothing caminhoPossivel = filter isJust caminhoPossivel
-  | otherwise = caminhoPossivel ++ encontraTodosCaminhosVizinhos xs destino grafo visitadas
-    where caminhoPossivel = encontraTodosCaminhos x destino grafo visitadas
+  | otherwise =  caminhoPossivel
+  ++ encontraTodosCaminhosVizinhos xs destino grafo visitadas
+  where caminhoPossivel = encontraTodosCaminhos x destino grafo visitadas

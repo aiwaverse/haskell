@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances    #-}
-
+{-# LANGUAGE TypeApplications     #-}
 {- |
 Copyright: (c) 2020 Aiwa
 SPDX-License-Identifier: MIT
@@ -22,9 +22,6 @@ module Funsets
   )
 where
 
-import qualified Text.Show                     as T
-                                                ( Show(..) )
-
 bound :: Int
 bound = 1000
 
@@ -34,7 +31,7 @@ instance Show FunSet where
   show f = "{" ++ setValues ++ "}"
    where
     setValues = intercalate ", "
-      $ map (show @String) [ x | x <- [(-bound) .. bound], f `contains` x ]
+      $ [show @String x | x <- [(-bound) .. bound], f `contains` x ]
 
 -- | Returns True if a given FunSet contains @n@, False otherwise
 contains :: FunSet -> Int -> Bool
