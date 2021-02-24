@@ -7,16 +7,16 @@ description:
     See README.md for more details.
 license:             MIT
 license-file:        LICENSE
-author:              aiwa
-maintainer:          aiwa <aiwavision@protonmail.com>
-copyright:           2021 aiwa
+author:              phi
+maintainer:          phi <aiwaverse@protonmail.com>
+copyright:           2021 phi
 build-type:          Simple
 extra-doc-files:     README.md
                      CHANGELOG.md
-tested-with:         GHC == 8.10.2
+tested-with:         GHC == 8.10.3
 
 common common-options
-  build-depends:       base ^>= 4.14.0.0
+  build-depends:       base ^>= 4.14.1.0
 
   ghc-options:         -Wall
                        -Wcompat
@@ -38,6 +38,19 @@ common common-options
     ghc-options:       -Wunused-packages
 
   default-language:    Haskell2010
+  default-extensions:  ConstraintKinds
+                       DeriveGeneric
+                       GeneralizedNewtypeDeriving
+                       InstanceSigs
+                       KindSignatures
+                       LambdaCase
+                       OverloadedStrings
+                       RecordWildCards
+                       ScopedTypeVariables
+                       StandaloneDeriving
+                       TupleSections
+                       TypeApplications
+                       ViewPatterns
 
 library
   import:              common-options
