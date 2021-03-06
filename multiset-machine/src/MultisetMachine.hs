@@ -19,12 +19,13 @@ module MultisetMachine
     insereBit,
     deleteBit,
     fromList,
+    empty
   )
 where
 
 import Data.List (delete, foldl')
 
-data Bit = One | Zero deriving stock (Eq, Ord)
+data Bit = One | Zero deriving stock (Eq, Ord, Show)
 
 type BitMultiset = [Bit]
 
@@ -40,6 +41,9 @@ fromList _ = error "Wrong numbers!"
 printBit :: Bit -> String
 printBit One = "1"
 printBit Zero = "0"
+
+empty :: BitMultiset -> Bool
+empty = null
 
 zeros :: BitMultiset -> Int
 zeros = length . filter (== Zero)

@@ -8,9 +8,6 @@ main = do
   let register = map (\c -> read @Int $ [c]) input
   putStrLn $ printBitMultiset . program . fromList $ register
 
-registerS :: BitMultiset
-registerS = fromList [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]
-
 ins1 :: BitMultiset -> BitMultiset
 ins1 s = ins2 $ deleteBit Zero s
 
@@ -25,7 +22,7 @@ ins4 s = if onlyOnes s then ins3 s else s
 
 program :: BitMultiset -> BitMultiset
 program s
-  | nZero > nOne = insereBit Zero $ ins1 s
+  | nZero > nOne = insereBit Zero $ ins1 . insereBit Zero $ s
   | nZero < nOne = insereBit One $ ins1 s
   | otherwise = ins1 s
   where
